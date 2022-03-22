@@ -78,9 +78,7 @@
 			"path": "pages/login/login",
 			"style": {
 				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": false
-				}
+				"navigationBarTextStyle":"black"
 			}
 		},
 			{
