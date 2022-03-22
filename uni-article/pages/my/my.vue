@@ -69,7 +69,7 @@ export default {
 	},
 	data() {
 		return {
-			loginStatus: false,
+			loginStatus: true,
 			nickname: "poicc",
 			data: [{
 				title: '帖子',
