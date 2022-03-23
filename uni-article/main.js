@@ -1,28 +1,40 @@
-import Vue from 'vue'
 import App from './App'
-import store from './store/index.js';
 
-//挂载vuex
-Vue.prototype.$store = store
+// #ifndef VUE3
+import Vue from 'vue'
 Vue.config.productionTip = false
-// 引入全局组件（分隔条和无内容组件）
-import divider from './components/common/divider.vue';
-Vue.component('divider', divider)
-import noThing from './components/common/no-thing.vue';
-Vue.component('no-thing', noThing)
 
-// 引入配置文件
-import $C from './common/config.js';
-Vue.prototype.$C = $C
-// 挂载助手函数库
-// import $U from './common/util.js';
-// Vue.prototype.$U = $U
-// // 引入请求库
-// import $H from './common/request.js';
-// Vue.prototype.$H = $H
+
+import message from './lib/message.js';
+Vue.prototype.$msg = message;
+
+
+import http from './lib/http.js';
+Vue.prototype.$http = http;
+
+
+// import mqxu from './lib/index.js'
+// Vue.use(mqxu)
+
+
 App.mpType = 'app'
+
 const app = new Vue({
-	store,
 	...App
-}) 
+})
 app.$mount()
+// #endif
+
+
+
+// #ifdef VUE3
+import {
+	createSSRApp
+} from 'vue'
+export function createApp() {
+	const app = createSSRApp(App)
+	return {
+		app
+	}
+}
+// #endif

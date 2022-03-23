@@ -25,6 +25,7 @@ public class User {
     private String nickname;
     private String avatar;
     private Integer gender;
+    private String bg;
     private LocalDate birthday;
     private String address;
     private Date createTime;

@@ -14,7 +14,7 @@ public interface UserService {
      * @param loginDto loginDto
      * @return 登录结果
      */
-    boolean login(LoginDto loginDto);
+    boolean loginByPassword(LoginDto loginDto);
 
     /**
      * 根据实际查找用户
@@ -22,4 +22,12 @@ public interface UserService {
      * @return user
      */
     User getUser(String phone);
+
+    /**
+     * 验证码登录
+     *
+     * @param loginDto 登录dto对象
+     * @return 登录结果
+     */
+    boolean loginByCode(LoginDto loginDto);
 }

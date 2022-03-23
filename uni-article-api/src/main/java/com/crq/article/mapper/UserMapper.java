@@ -17,8 +17,8 @@ public interface UserMapper {
      * 新增用户 并返回自增主键
      * @param user user
      */
-    @Insert("INSERT INTO t_user (phone,password,nickname,avatar,gender,birthday,address,create_time)" +
-    "VALUE (#{phone},#{password},#{nickname},#{avatar},#{gender},#{birthday},#{address},#{createTime})")
+    @Insert("INSERT INTO t_user (phone,password,nickname,avatar,gender,bg,birthday,address,create_time)" +
+    "VALUE (#{phone},#{password},#{nickname},#{avatar},#{gender},#{bg},#{birthday},#{address},#{createTime})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(User user);
 
