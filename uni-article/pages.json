@@ -71,7 +71,8 @@
 			"path": "pages/news/news",
 			"style": {
 				"navigationBarTitleText": "动态",
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+				"navigationStyle": "custom"
 			}
 
 		}, {
