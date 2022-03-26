@@ -28,15 +28,8 @@
 		}, {
 			"path": "pages/my/my",
 			"style": {
-				"navigationBarTitleText": "我的",
-				"enablePullDownRefresh": false,
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"type": "menu"
-						}]
-					}
-				}
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white"
 			}
 
 		}, {
@@ -79,52 +72,59 @@
 			"path": "pages/login/login",
 			"style": {
 				"navigationStyle": "custom",
-				"navigationBarTextStyle":"black"
+				"navigationBarTextStyle": "black"
 			}
 		},
-			{
-				"path": "pages/settings/settings",
-				"style": {
-					"navigationBarTitleText": "",
-					"enablePullDownRefresh": false
-				}
+		{
+			"path": "pages/settings/settings",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 
+		}, {
+			"path": "pages/user-edit/user-edit",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
 			}
-		],
-		"globalStyle": {
-			"navigationBarTextStyle": "white",
-			"navigationBarTitleText": "我的应用",
-			"navigationBarBackgroundColor": "#FC5C82",
-			"backgroundColor": "#F8F8F8"
-		},
-		"tabBar": {
-			"color": "#333333",
-			"selectedColor": "#FC5C82",
-			"backgroundColor": "#FFFFFF",
-			"list": [{
-					"pagePath": "pages/index/index",
-					"text": "首页",
-					"iconPath": "static/tabbar/index.png",
-					"selectedIconPath": "static/tabbar/indexed.png"
-				},
-				{
-					"pagePath": "pages/news/news",
-					"text": "动态",
-					"iconPath": "static/tabbar/news.png",
-					"selectedIconPath": "static/tabbar/newsed.png"
-				},
-				{
-					"pagePath": "pages/msg/msg",
-					"text": "消息",
-					"iconPath": "static/tabbar/paper.png",
-					"selectedIconPath": "static/tabbar/papered.png"
-				},
-				{
-					"pagePath": "pages/my/my",
-					"text": "我的",
-					"iconPath": "static/tabbar/home.png",
-					"selectedIconPath": "static/tabbar/homeed.png"
-				}
-			]
+
 		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "我的应用",
+		"navigationBarBackgroundColor": "#FC5C82",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#333333",
+		"selectedColor": "#FC5C82",
+		"backgroundColor": "#FFFFFF",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/tabbar/index.png",
+				"selectedIconPath": "static/tabbar/indexed.png"
+			},
+			{
+				"pagePath": "pages/news/news",
+				"text": "动态",
+				"iconPath": "static/tabbar/news.png",
+				"selectedIconPath": "static/tabbar/newsed.png"
+			},
+			{
+				"pagePath": "pages/msg/msg",
+				"text": "消息",
+				"iconPath": "static/tabbar/paper.png",
+				"selectedIconPath": "static/tabbar/papered.png"
+			},
+			{
+				"pagePath": "pages/my/my",
+				"text": "我的",
+				"iconPath": "static/tabbar/home.png",
+				"selectedIconPath": "static/tabbar/homeed.png"
+			}
+		]
 	}
+}

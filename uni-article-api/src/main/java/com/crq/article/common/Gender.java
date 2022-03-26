@@ -13,11 +13,11 @@ public enum Gender {
     /**
      * 男
      */
-    MALE(0, "男"),
+    MALE(0, "女"),
     /**
      * 女
      */
-    FEMALE(1, "女"),
+    FEMALE(1, "男"),
     /**
      * 保密
      */

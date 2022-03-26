@@ -2,7 +2,7 @@
 	<view>
 		<view class="px-2">
 			<view class="bg-white mt-1"><uni-list-item title="账号与安全"></uni-list-item></view>
-			<view class="bg-white mt-1"><uni-list-item title="资料编辑"></uni-list-item></view>
+			<view class="bg-white mt-1"><uni-list-item title="资料编辑" @tap="open('user-edit')"></uni-list-item></view>
 			<view class="bg-white mt-1">
 				<uni-list-item title="清除缓存" showBadge>
 					<text solt="right" class="text-muted">{{ currentSize | format }}</text>

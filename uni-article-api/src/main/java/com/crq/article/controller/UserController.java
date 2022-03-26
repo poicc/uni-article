@@ -2,13 +2,18 @@ package com.crq.article.controller;
 
 import com.crq.article.common.ResponseResult;
 import com.crq.article.common.ResultCode;
+import com.crq.article.model.User;
 import com.crq.article.model.dto.LoginDto;
+import com.crq.article.model.dto.WxLoginDto;
 import com.crq.article.service.RedisService;
 import com.crq.article.service.UserService;
+import com.crq.article.util.FileResource;
 import com.crq.article.util.SmsUtil;
 import com.crq.article.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
@@ -29,6 +34,9 @@ public class UserController {
 
     @Resource
     private RedisService redisService;
+
+    @Resource
+    private FileResource fileResource;
 
     @PostMapping(value = "/login/pass")
     public ResponseResult loginByPassword(@RequestBody LoginDto loginDto) {
@@ -70,5 +78,42 @@ public class UserController {
         } else {
             return ResponseResult.failure(ResultCode.USER_SIGN_IN_FAIL);
         }
+    }
+
+    @PostMapping(value = "/update")
+    public User update(@RequestBody User user) {
+        log.info("user:" + user);
+        return userService.updateUser(user);
+    }
+
+    @PostMapping(value = "/login/wx")
+    public ResponseResult wxLogin(@RequestBody WxLoginDto wxLoginDto) {
+        log.info("wxLoginDto:" + wxLoginDto);
+        User user = userService.wxLogin(wxLoginDto);
+        if (user == null) {
+            log.info("新用户");
+            return ResponseResult.success(userService.findByOpenId(wxLoginDto.getWxOpenId()));
+        }
+        return ResponseResult.success(userService.findByOpenId(wxLoginDto.getWxOpenId()));
+    }
+
+    @PostMapping(value = "/upload")
+    public ResponseResult uploadFile(MultipartFile file) {
+        // 声明图片的地址路径，返回到前端
+        String path = null;
+        // 判断文件不能为空
+        if (file != null) {
+            // 获得文件上传的名称
+            String fileName = file.getOriginalFilename();
+            log.info(fileName);
+            //调用上传服务，得到上传后的新文件名
+            path = userService.uploadFile(file);
+        }
+        if (StringUtils.isNotBlank(path)) {
+            //拼接上服务器地址前缀，得到最终返回给前端的url
+            path = fileResource.getOssHost() + path;
+            log.info(path);
+        }
+        return ResponseResult.success(path);
     }
 }

@@ -77,7 +77,7 @@
 			<!-- 第三方登录 -->
 			<view class="flex align-center px-5 py-3 mt-3">
 				<view class="flex-1 flex align-center justify-center">
-					<view class="iconfont icon-weixin bg-success font-lg text-white flex align-center justify-center rounded-circle size-100"></view>
+					<view @tap="appLogin" class="iconfont icon-weixin bg-success font-lg text-white flex align-center justify-center rounded-circle size-100"></view>
 				</view>
 				<view class="flex-1 flex align-center justify-center">
 					<view class="iconfont icon-QQ bg-primary font-lg text-white flex align-center justify-center rounded-circle size-100"></view>
@@ -105,7 +105,7 @@ export default {
 			limitTime: 0,
 			disabled: true,
 			loading: false,
-			checked: '选中'
+			checked: "选中"
 		};
 	},
 	methods: {
@@ -173,11 +173,52 @@ export default {
 		checkboxChange(e) {
 			let values = e.detail.value;
 			console.log(values);
-			if (values.includes('选中')) {
-				this.disabled = false
+			if (values.includes("选中")) {
+				this.disabled = false;
 			} else {
-				this.disabled = true
+				this.disabled = true;
 			}
+		},
+		appLogin() {
+			this.$msg.toast("微信登录");
+			let self = this;
+			uni.login({
+				provider: "weixin",
+				success: function(loginRes) {
+					console.log(loginRes);
+					uni.getUserInfo({
+						provider: "weixin",
+						success: infoRes => {
+							console.log(infoRes);
+							let wxLoginDto = {
+								wxOpenId: infoRes.userInfo.openId,
+								nickname: infoRes.userInfo.nickName,
+								avatar: infoRes.userInfo.avatarUrl,
+								gender: infoRes.userInfo.gender
+							};
+							self.$http.post("/users/login/wx", wxLoginDto, "json").then(res => {
+								console.log(res);
+								if (res.code === 1) {
+									uni.showModal({
+										title: "登录成功",
+										success() {
+											uni.setStorageSync("user", res.data);
+											uni.switchTab({
+												url: "../my/my"
+											});
+										}
+									});
+								} else {
+									uni.showModal({
+										title: "登录失败"
+									});
+									return false;
+								}
+							});
+						}
+					});
+				}
+			});
 		},
 		getCode() {
 			// 防止重复获取
