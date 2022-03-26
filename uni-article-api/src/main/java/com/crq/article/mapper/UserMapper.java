@@ -32,7 +32,7 @@ public interface UserMapper {
      * @param user 用户对象
      */
     @Update("UPDATE t_user SET password=#{password},nickname=#{nickname},avatar=#{avatar}," +
-            "gender=#{gender},birthday=#{birthday},address=#{address},banner=#{banner} WHERE id=#{id} ")
+            "gender=#{gender},birthday=#{birthday},address=#{address},bg=#{bg} WHERE id=#{id} ")
     void updateUser(User user);
 
 

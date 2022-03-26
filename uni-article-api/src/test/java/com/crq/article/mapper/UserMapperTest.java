@@ -8,11 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.annotation.Resource;
-
 import java.time.LocalDate;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -41,6 +40,13 @@ class UserMapperTest {
         User user =  userMapper.findUserByPhone("18851699003");
         assertNotNull(user);
         log.info(String.valueOf(user));
+    }
+
+    @Test
+    void updateUser() throws Exception {
+        User user = userMapper.findUserByPhone("18851699003");
+        user.setNickname("陶然然");
+        userMapper.updateUser(user);
     }
 
 }
