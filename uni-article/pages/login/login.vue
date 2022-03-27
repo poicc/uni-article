@@ -180,7 +180,6 @@ export default {
 			}
 		},
 		appLogin() {
-			this.$msg.toast("微信登录");
 			let self = this;
 			uni.login({
 				provider: "weixin",
@@ -203,9 +202,17 @@ export default {
 										title: "登录成功",
 										success() {
 											uni.setStorageSync("user", res.data);
-											uni.switchTab({
-												url: "../my/my"
-											});
+											// 已经绑定手机号,直接进主页
+											if (res.data.phone.length > 0) {
+												uni.switchTab({
+													url: "../my/my"
+												});
+											} else {
+												// 没有绑定，调到绑定手机页面
+												uni.navigateTo({
+													url: "../bind-phone/bind-phone"
+												});
+											}
 										}
 									});
 								} else {

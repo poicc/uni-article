@@ -23,11 +23,11 @@
 				<view class="flex">
 					<image :src="user.avatar" class="size-120 rounded-circle avatar img-center"></image>
 					<view class="p-2  rounded flex-1 flex align-center shadow "
-						style="z-index: 50;position: absolute;top:310rpx;right:28%;background-color: rgba(255,255,255,0.3);">
+						style="z-index: 50;position: absolute;top:310rpx;right:23%;left:23%;background-color: rgba(255,255,255,0.3);">
 						<view class="flex-1 flex flex-column px-3">
 							<view class="flex align-center mb-1">
 								<text class="font-md font-weight-bold text-body  mr-2">{{user.nickname}}</text>
-								<image v-if="user.gender == 0" src="/static/nv.png" class="size-50"></image>
+								<image v-if="user.gender == 2" src="/static/nv.png" class="size-50"></image>
 								<image v-else src="/static/nan.png" class="size-50"></image>
 							</view>
 							<view>

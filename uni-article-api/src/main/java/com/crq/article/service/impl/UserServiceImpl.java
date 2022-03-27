@@ -4,12 +4,14 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.crq.article.mapper.UserMapper;
 import com.crq.article.model.User;
+import com.crq.article.model.dto.BindPhoneDto;
 import com.crq.article.model.dto.LoginDto;
 import com.crq.article.model.dto.WxLoginDto;
 import com.crq.article.service.RedisService;
 import com.crq.article.service.UserService;
 import com.crq.article.util.AliyunResource;
 import com.crq.article.util.FileResource;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +28,7 @@ import java.util.UUID;
  * @create: 2022-03-22 16:47
  **/
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
@@ -161,5 +164,35 @@ public class UserServiceImpl implements UserService {
         // 关闭OSSClient
         ossClient.shutdown();
         return uploadFileName;
+    }
+
+    @Override
+    public User bindPhone(BindPhoneDto bindPhoneDto) {
+        // 此时根据手机号查出数据库中用户信息
+        User savedUser = userMapper.findUserByPhone(bindPhoneDto.getPhone());
+        log.info("1-----" + savedUser);
+        // 检查redis中是否有该手机号存储的短信
+        boolean flag = redisService.existsKey(bindPhoneDto.getPhone());
+        log.info("2------" + flag);
+        if (flag) {
+            // 取出验证码
+            String saveCode = redisService.getValue(bindPhoneDto.getPhone(), String.class);
+            //验证码通过
+            if (saveCode.equalsIgnoreCase(bindPhoneDto.getCode())) {
+                // 该用户对应的wxOpenId如果空，表示还没绑定
+                if (savedUser.getWxOpenId() == null || savedUser.getWxOpenId().trim().length() == 0) {
+                    // 删除wxOpenId对应的用户记录（合并账号）,要先做这条语句哦，要不然会把主账号也删掉
+                    userMapper.deleteUserByOpenId(bindPhoneDto.getWxOpenId());
+                    //补全该用户的wxOpenId
+                    savedUser.setWxOpenId(bindPhoneDto.getWxOpenId());
+                    log.info("3-----" + savedUser);
+                    // 更新该手机号对应的记录信息（持久化wxOpenId）
+                    userMapper.bandPhone(bindPhoneDto.getPhone(), bindPhoneDto.getWxOpenId());
+                    savedUser = userMapper.findUserByPhone(bindPhoneDto.getPhone());
+                }
+            }
+        }
+        // 返回用户信息
+        return savedUser;
     }
 }

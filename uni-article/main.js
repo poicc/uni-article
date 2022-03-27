@@ -13,9 +13,6 @@ import http from './lib/http.js';
 Vue.prototype.$http = http;
 
 
-// import mqxu from './lib/index.js'
-// Vue.use(mqxu)
-
 
 App.mpType = 'app'
 

@@ -3,6 +3,7 @@ package com.crq.article.controller;
 import com.crq.article.common.ResponseResult;
 import com.crq.article.common.ResultCode;
 import com.crq.article.model.User;
+import com.crq.article.model.dto.BindPhoneDto;
 import com.crq.article.model.dto.LoginDto;
 import com.crq.article.model.dto.WxLoginDto;
 import com.crq.article.service.RedisService;
@@ -115,5 +116,12 @@ public class UserController {
             log.info(path);
         }
         return ResponseResult.success(path);
+    }
+
+    @PostMapping(value = "/bind")
+    public ResponseResult bindPhone(@RequestBody BindPhoneDto bindPhoneDto) {
+        log.info(String.valueOf(bindPhoneDto));
+        User user = userService.bindPhone(bindPhoneDto);
+        return ResponseResult.success(user);
     }
 }

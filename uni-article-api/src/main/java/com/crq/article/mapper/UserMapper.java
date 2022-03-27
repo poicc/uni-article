@@ -45,5 +45,23 @@ public interface UserMapper {
     @Select("SELECT * FROM t_user WHERE wx_openid = #{wxOpenId} ")
     User fineUserByOpenId(@Param("wxOpenId") String wxOpenId);
 
+    /**
+     * 绑定手机号
+     *
+     * @param phone    手机号
+     * @param wxOpenId wxOpenId
+     */
+    @Update(("UPDATE t_user SET wx_openid=#{wxOpenId} WHERE phone=#{phone} "))
+    void bandPhone(@Param("phone") String phone, @Param("wxOpenId") String wxOpenId);
+
+
+    /**
+     * 根据wxOpenId删除用户
+     *
+     * @param wxOpenId wxOpenId
+     */
+    @Delete(("DELETE FROM t_user WHERE wx_openid=#{wxOpenId} "))
+    void deleteUserByOpenId(@Param("wxOpenId") String wxOpenId);
+
 
 }

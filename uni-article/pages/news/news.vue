@@ -1,19 +1,13 @@
 <template>
-	<view class="p-2">
-		<!-- #ifndef MP-WEIXIN -->
-		<uni-status-bar></uni-status-bar>
-		<view class="banner p-2" :style="{ '--bgurl': 'url(' + user.bg + ')' }">
-			<view class="avatar-con flex">
-				<image :src="user.avatar" class="size-100 rounded-circle" mode=""></image>
-				<view class="flex-1 flex justify-end">
-					<text>{{user.nickname}}</text>
-					<text>{{user.address}}</text>
-				</view>
-			</view>
-			<!-- <view class="w-100 bg-pink mt-5" style="z-index: 50;height: 200rpx;"></view> -->
-			
+	<view class="">
+		<view class="img-view">
+			<image :src="imgUrl" mode=""></image>
 		</view>
-		<!-- #endif -->
+		<view class="p-2 border-danger border-bottom m-2" v-for="count in 10">
+			<view class="my-1 font-md">在App端默认为标题栏透明，当用户向下滚动时，标题栏逐渐由透明转变为不透明</view>
+			<view class="my-1 font-md">当用户再次向上滚动时，标题栏又从不透明变为透明状态</view>
+			<view class="my-1 font-md">在微信小程序端 导航栏始终为不透明样式</view>
+		</view>
 	</view>
 </template>
 

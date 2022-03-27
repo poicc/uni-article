@@ -1,6 +1,7 @@
 package com.crq.article.service;
 
 import com.crq.article.model.User;
+import com.crq.article.model.dto.BindPhoneDto;
 import com.crq.article.model.dto.LoginDto;
 import com.crq.article.model.dto.WxLoginDto;
 import org.springframework.web.multipart.MultipartFile;
@@ -65,4 +66,12 @@ public interface UserService {
      * @return 上传后的url
      */
     String uploadFile(MultipartFile file);
+
+    /**
+     * 绑定手机
+     *
+     * @param bindPhoneDto 入参
+     * @return User
+     */
+    User bindPhone(BindPhoneDto bindPhoneDto);
 }

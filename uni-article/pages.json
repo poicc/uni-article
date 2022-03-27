@@ -65,7 +65,7 @@
 			"style": {
 				"navigationBarTitleText": "动态",
 				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+				"transparentTitle":"auto"
 			}
 
 		}, {
@@ -122,6 +122,15 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "意见反馈",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/bind-phone/bind-phone",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "绑定手机号",
                 "enablePullDownRefresh": false
             }
             
