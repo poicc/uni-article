@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crq.article.mapper.ArticleMapper">
+
+    <resultMap id="BaseResultMap" type="Article">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="category" column="category" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="cover" column="cover" jdbcType="VARCHAR"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="url" column="url" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="totalWords" column="total_words" jdbcType="VARCHAR"/>
+            <result property="duration" column="duration" jdbcType="INTEGER"/>
+            <result property="pageView" column="page_view" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <insert id="batchInsert" parameterType="Article">
+        INSERT INTO t_article
+        (title,cover,category,url,summary,user_id) VALUES
+        <foreach collection="articles" item="article" index="index" separator=",">
+            (#{article.title},#{article.cover},#{article.category},#{article.url},#{article.summary},#{article.userId})
+        </foreach>
+    </insert>
+</mapper>
