@@ -1,12 +1,15 @@
 package com.crq.article.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -16,6 +19,8 @@ import java.util.Date;
 @Data
 @Builder
 @Alias("Article")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Article implements Serializable {
     /**
      * 主键
@@ -70,8 +75,10 @@ public class Article implements Serializable {
     /**
      * 浏览次数
      */
-    private Integer pageView;
+    private String pageView;
     private String summary;
+
+    private List<Tag> tags;
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -219,14 +226,14 @@ public class Article implements Serializable {
     /**
      * 浏览次数
      */
-    public Integer getPageView() {
+    public String getPageView() {
         return pageView;
     }
 
     /**
      * 浏览次数
      */
-    public void setPageView(Integer pageView) {
+    public void setPageView(String pageView) {
         this.pageView = pageView;
     }
 

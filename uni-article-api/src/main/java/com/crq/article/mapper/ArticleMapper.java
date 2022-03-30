@@ -19,5 +19,35 @@ public interface ArticleMapper {
      */
     int batchInsert(@Param("articles")List<Article> article);
 
+    /**
+     * 查所有
+     * @return list
+     */
+    List<Article> selectAll();
+
+
+    /**
+     * 批量修改
+     * @param articles articles
+     * @return int
+     */
+    int batchUpdate(@Param("articles") List<Article> articles);
+
+
+
+    /**
+     * 查询课程及选修该课程的所有学生
+     * @param articleId articleId
+     * @return article
+     */
+    Article getArticle(int articleId);
+
+    /**
+     * 添加article
+     * @param article article
+     * @return int
+     */
+    int addArticle(Article article);
+
 
 }

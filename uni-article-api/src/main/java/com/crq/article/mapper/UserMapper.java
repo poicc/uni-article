@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.*;
  * @author: crq
  * @create: 2022-03-22 16:22
  **/
+@Mapper
 public interface UserMapper {
 
     /**
@@ -62,6 +63,14 @@ public interface UserMapper {
      */
     @Delete(("DELETE FROM t_user WHERE wx_openid=#{wxOpenId} "))
     void deleteUserByOpenId(@Param("wxOpenId") String wxOpenId);
+
+    /**
+     * 根据Id查询
+     * @param id id
+     * @return user
+     */
+    @Select("SELECT * FROM t_user WHERE id = #{id} ")
+    User fineUserById(@Param("id") Integer id);
 
 
 }

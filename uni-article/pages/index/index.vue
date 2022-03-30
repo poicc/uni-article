@@ -15,7 +15,20 @@
 			}
 		},
 		onLoad() {
-
+			this.$http.get("/article/id?id="+37).then(res => {
+				console.log(res)
+				// if (res.code === 1) {
+				// 	// this.message.toast('登录成功', type = 'suc');
+				// 	// this.$msg.toast('登录成功', type = 'suc');
+				// 	uni.setStorageSync("user", res.data);
+				// 	uni.switchTab({
+				// 		url: "../my/my"
+				// 	});
+				// } else {
+				// 	this.$msg.toast(res.msg);
+				// 	return false;
+				// }
+			});
 		},
 		methods: {
 

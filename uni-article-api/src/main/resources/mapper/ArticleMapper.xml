@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.crq.article.mapper.ArticleMapper">
 
-    <resultMap id="BaseResultMap" type="Article">
+    <resultMap id="articleMap" type="Article">
             <id property="id" column="id" jdbcType="VARCHAR"/>
             <result property="category" column="category" jdbcType="VARCHAR"/>
             <result property="userId" column="user_id" jdbcType="INTEGER"/>
@@ -15,14 +15,48 @@
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="totalWords" column="total_words" jdbcType="VARCHAR"/>
             <result property="duration" column="duration" jdbcType="INTEGER"/>
-            <result property="pageView" column="page_view" jdbcType="INTEGER"/>
+            <result property="pageView" column="page_view" jdbcType="VARCHAR"/>
+        <collection property="tags" ofType="ArticleTag" column="id" javaType="ArrayList" select="getTags">
+
+        </collection>
     </resultMap>
 
     <insert id="batchInsert" parameterType="Article">
         INSERT INTO t_article
-        (title,cover,category,url,summary,user_id) VALUES
+        (title,cover,category,url,summary,user_id,create_time) VALUES
         <foreach collection="articles" item="article" index="index" separator=",">
-            (#{article.title},#{article.cover},#{article.category},#{article.url},#{article.summary},#{article.userId})
+            (#{article.title},#{article.cover},#{article.category},#{article.url},#{article.summary},#{article.userId},#{article.createTime})
         </foreach>
     </insert>
+    <insert id="addArticle" parameterType="Article" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_article (id,category,user_id,title,cover,content,url,create_time,page_view,summary) VALUES
+        (#{id},#{category},#{userId},#{title},#{cover},#{content},#{url},#{createTime},#{pageView},#{summary})
+    </insert>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="articles" item="article" index="index" open="" close="" separator=";">
+            UPDATE t_article t
+<!--            <set>-->
+<!--                t.page_view =#{article.pageView},t.content =#{article.content}-->
+<!--            </set>-->
+            <set>
+                t.cover =#{article.cover}
+            </set>
+            WHERE t.id= #{article.id}
+        </foreach>
+    </update>
+    <select id="selectAll" resultType="Article">
+        SELECT * FROM t_article
+    </select>
+    <select id="getArticle" resultMap="articleMap">
+        SELECT a.*,t.tag_name
+        FROM t_article a
+                 LEFT JOIN
+             t_article_tag ata
+             ON a.id = ata.article_id
+                 LEFT JOIN
+             t_tag t
+             ON ata.tag_id = t.id
+        WHERE a.id = #{articleId}
+    </select>
 </mapper>
