@@ -73,7 +73,7 @@ public class ArticleDetailTask implements Callable<List<Article>> {
             //封装文章对象
             Article article = Article.builder()
                     .id(id)
-                    .pageView(read)
+//                    .pageView(read)
                     .content(String.valueOf(contentNode))
                     .build();
             articleList.add(article);

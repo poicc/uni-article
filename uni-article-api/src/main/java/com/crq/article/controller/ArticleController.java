@@ -1,9 +1,10 @@
 package com.crq.article.controller;
 
 import com.crq.article.common.ResponseResult;
-import com.crq.article.model.dto.AddArticleDto;
+import com.crq.article.model.Article;
+import com.crq.article.model.vo.ArticleVo;
 import com.crq.article.service.ArticleService;
-import lombok.extern.slf4j.Slf4j;
+import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -14,25 +15,28 @@ import javax.annotation.Resource;
  * @create: 2022-03-29 14:41
  **/
 @RestController
-@RequestMapping(value = "/api/v1/article")
-@Slf4j
+@RequestMapping("/api/v1/articles")
 public class ArticleController {
     @Resource
     private ArticleService articleService;
 
-    @GetMapping(value = "/article")
-    public ResponseResult getAll(@RequestParam("page") Integer page,@RequestParam("size")Integer size) {
-        return ResponseResult.success(articleService.selectAllByPage(page,size));
+    @PostMapping("page")
+    public ResponseResult getArticleByPage(@RequestParam(name = "pageNum", defaultValue = "1", required = false) int pageNum,
+                                          @RequestParam(name = "pageSize", defaultValue = "6", required = false) int pageSize) {
+        PageInfo<ArticleVo> articleVoPageInfo = articleService.selectByPage(pageNum, pageSize);
+        return ResponseResult.success(articleVoPageInfo);
     }
 
-    @GetMapping(value = "id")
-    public ResponseResult getArticleById(@RequestParam("id") Integer id) {
-        return ResponseResult.success(articleService.getArticleById(id));
+    @GetMapping("{id}")
+    public ResponseResult getArticleDetail(@PathVariable int id) {
+        ArticleVo detail = articleService.getDetail(id);
+        return ResponseResult.success(detail);
     }
 
-    @PostMapping(value = "add")
-    public ResponseResult addArticle(@RequestBody AddArticleDto addArticleDto) {
-        return ResponseResult.success(articleService.addArticle(addArticleDto));
+    @PostMapping("post")
+    public ResponseResult postArticle(@RequestBody Article article) {
+        return ResponseResult.success(articleService.postArticle(article));
     }
+
 
 }

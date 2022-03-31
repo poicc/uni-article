@@ -5,58 +5,55 @@
 <mapper namespace="com.crq.article.mapper.ArticleMapper">
 
     <resultMap id="articleMap" type="Article">
-            <id property="id" column="id" jdbcType="VARCHAR"/>
-            <result property="category" column="category" jdbcType="VARCHAR"/>
-            <result property="userId" column="user_id" jdbcType="INTEGER"/>
-            <result property="title" column="title" jdbcType="VARCHAR"/>
-            <result property="cover" column="cover" jdbcType="VARCHAR"/>
-            <result property="content" column="content" jdbcType="VARCHAR"/>
-            <result property="url" column="url" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="totalWords" column="total_words" jdbcType="VARCHAR"/>
-            <result property="duration" column="duration" jdbcType="INTEGER"/>
-            <result property="pageView" column="page_view" jdbcType="VARCHAR"/>
-        <collection property="tags" ofType="ArticleTag" column="id" javaType="ArrayList" select="getTags">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="category" column="category" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="cover" column="cover" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="totalWords" column="total_words" jdbcType="VARCHAR"/>
+        <result property="duration" column="duration" jdbcType="INTEGER"/>
+        <result property="pageView" column="page_view" jdbcType="VARCHAR"/>
+        <collection property="tagList" ofType="ArticleTag" column="id" javaType="ArrayList" select="getTags">
 
         </collection>
     </resultMap>
 
-    <insert id="batchInsert" parameterType="Article">
-        INSERT INTO t_article
-        (title,cover,category,url,summary,user_id,create_time) VALUES
-        <foreach collection="articles" item="article" index="index" separator=",">
-            (#{article.title},#{article.cover},#{article.category},#{article.url},#{article.summary},#{article.userId},#{article.createTime})
-        </foreach>
-    </insert>
-    <insert id="addArticle" parameterType="Article" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_article (id,category,user_id,title,cover,content,url,create_time,page_view,summary) VALUES
-        (#{id},#{category},#{userId},#{title},#{cover},#{content},#{url},#{createTime},#{pageView},#{summary})
-    </insert>
+    <select id="getComments" resultType="CommentVo" parameterType="int">
+        SELECT a.id, a.content, a.create_time, b.nickname, b.avatar
+        FROM t_comment a
+                 LEFT JOIN t_user b ON a.user_id = b.id
+        WHERE a.id = #{id}
+        ORDER BY id DESC
+    </select>
 
-    <update id="batchUpdate" parameterType="java.util.List">
-        <foreach collection="articles" item="article" index="index" open="" close="" separator=";">
-            UPDATE t_article t
-<!--            <set>-->
-<!--                t.page_view =#{article.pageView},t.content =#{article.content}-->
-<!--            </set>-->
-            <set>
-                t.cover =#{article.cover}
-            </set>
-            WHERE t.id= #{article.id}
-        </foreach>
-    </update>
-    <select id="selectAll" resultType="Article">
-        SELECT * FROM t_article
-    </select>
-    <select id="getArticle" resultMap="articleMap">
-        SELECT a.*,t.tag_name
+
+
+    <select id="getTags" resultType="ArticleTag" parameterType="int">
+        SELECT b.id, b.tag_name
         FROM t_article a
-                 LEFT JOIN
-             t_article_tag ata
-             ON a.id = ata.article_id
-                 LEFT JOIN
-             t_tag t
-             ON ata.tag_id = t.id
-        WHERE a.id = #{articleId}
+                 LEFT JOIN t_article_tag b
+                           ON a.id = b.article_id
+        WHERE a.id = #{id}
     </select>
+
+    <select id="selectAll" resultMap="articleMap">
+        SELECT a.*, b.nickname, b.avatar
+        FROM t_article a
+                 LEFT JOIN t_user b ON a.user_id = b.id
+        ORDER BY a.id DESC
+    </select>
+
+
+    <insert id="batchInsert" parameterType="Article">
+        INSERT INTO t_article (category,user_id,title,cover,summary,content,create_time)
+        VALUES
+        <foreach collection="articleList" item="item" index="index" separator=",">
+            (
+            #{item.category},#{item.userId},#{item.title},#{item.cover},#{item.summary},#{item.content},#{item.createTime}
+            )
+        </foreach>
+    </insert>
 </mapper>

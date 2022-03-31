@@ -1,9 +1,11 @@
 package com.crq.article.service;
 
 import com.crq.article.model.Article;
-import com.crq.article.model.dto.AddArticleDto;
 import com.crq.article.model.vo.ArticleVo;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 *
@@ -11,25 +13,35 @@ import com.github.pagehelper.PageInfo;
  */
 public interface ArticleService {
     /**
-     * 分页查询
-     * @param page 页码
-     * @param size 大小
-     * @return list
+     * 批量新增
+     *
+     * @param articles articles
      */
-    PageInfo<Article> selectAllByPage(Integer page, Integer size);
+    void insertArticles(List<Article> articles);
 
     /**
-     * 根据Id查询文章详情
-     * @param articleId articleId
+     * 查询文章数据并分页
+     *
+     * @param pageNum pageNum
+     * @param pageSize pageSize
+     * @return page
+     */
+    PageInfo<ArticleVo> selectByPage(int pageNum, int pageSize);
+
+    /**
+     * 根据文章id查找文章详情
+     *
+     * @param id id
+     * @return  ArticleVo
+     */
+    ArticleVo getDetail(@Param(value = "id") int id);
+
+    /**
+     * 发布文章
+     *
+     * @param article article
      * @return article
      */
-    ArticleVo getArticleById(Integer articleId);
-
-    /**
-     * 添加
-     * @param addArticleDto addArticleDto
-     * @return int
-     */
-    Article addArticle(AddArticleDto addArticleDto);
+    Article postArticle(Article article);
 
 }

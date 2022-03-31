@@ -4,18 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.crq.article.mapper.ArticleTagMapper">
 
-    <resultMap id="BaseResultMap" type="com.crq.article.model.ArticleTag">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="articleId" column="article_id" jdbcType="INTEGER"/>
-            <result property="tagId" column="tag_id" jdbcType="INTEGER"/>
-    </resultMap>
-
-
     <insert id="batchInsert" parameterType="ArticleTag">
-        INSERT INTO t_article_tag
-        (article_id,tag_id) VALUES
-        <foreach collection="articles" item="article" index="index" separator=",">
-            (#{article.articleId},#{article.tagId})
+        INSERT INTO t_article_tag(article_id,tag_id,tag_name) VALUES
+        <foreach collection="articleTagList" item="item" index="index" separator=",">
+            (#{item.articleId},#{item.tagId},#{item.tagName})
         </foreach>
     </insert>
+
 </mapper>

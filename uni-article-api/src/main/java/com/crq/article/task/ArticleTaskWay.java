@@ -9,7 +9,6 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
@@ -98,7 +97,7 @@ public class ArticleTaskWay implements Callable<List<Article>> {
                     .url(url)
                     .summary(summary)
                     .userId(userId)
-                    .createTime(new Date())
+//                    .createTime(new Date())
                     .build();
             articleList.add(article);
         }

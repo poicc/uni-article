@@ -28,6 +28,7 @@ public class ArticleTag implements Serializable {
      * 
      */
     private Integer tagId;
+    private String tagName;
 
     @Serial
     private static final long serialVersionUID = 1L;

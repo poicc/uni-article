@@ -30,6 +30,6 @@ class ArticleTagMapperTest {
             articleList.add(articleTag);
         }
 
-        int count = articleTagMapper.batchInsert(articleList);
+//        int count = articleTagMapper.batchInsert(articleList);
     }
 }

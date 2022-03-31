@@ -2,24 +2,19 @@ package com.crq.article.service.impl;
 
 import com.crq.article.mapper.ArticleMapper;
 import com.crq.article.mapper.ArticleTagMapper;
-import com.crq.article.mapper.UserMapper;
 import com.crq.article.model.Article;
 import com.crq.article.model.ArticleTag;
-import com.crq.article.model.User;
-import com.crq.article.model.dto.AddArticleDto;
 import com.crq.article.model.vo.ArticleVo;
 import com.crq.article.service.ArticleService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author crq
@@ -31,45 +26,39 @@ public class ArticleServiceImpl implements ArticleService {
     @Resource
     private ArticleMapper articleMapper;
     @Resource
-    private UserMapper userMapper;
-    @Resource
     private ArticleTagMapper articleTagMapper;
 
     @Override
-    public PageInfo<Article> selectAllByPage(Integer page, Integer size) {
-        PageHelper.startPage(page, size);
-        List<Article> articles = articleMapper.selectAll();
-        return PageInfo.of(articles);
-    }
-
-    @Override
-    public ArticleVo getArticleById(Integer articleId) {
-        Article article = articleMapper.getArticle(articleId);
-        User user = userMapper.fineUserById(article.getUserId());
-        return ArticleVo.builder().article(article).userName(user.getNickname()).userAvatar(user.getAvatar()).build();
-    }
-
-    @Override
-    public Article addArticle(AddArticleDto addArticleDto) {
-        Article article = new Article();
-        BeanUtils.copyProperties(addArticleDto, article);
-        article.setCreateTime(new Date());
-        log.info(String.valueOf(article));
-        articleMapper.addArticle(article);
-        String ids = addArticleDto.getIds();
-        List<ArticleTag> articleTags = new ArrayList<>(10);
-        if (!Objects.equals(ids, "")) {
-            String[] idsArray = ids.split(",");
-            for (int i = 0; i < idsArray.length; i++) {
-                ArticleTag articleTag = new ArticleTag();
-                articleTag.setArticleId(article.getId());
-                articleTag.setTagId(Integer.valueOf(idsArray[i]));
-                articleTags.add(articleTag);
+    public void insertArticles(List<Article> articles) {
+        articleMapper.batchInsert(articles);
+        assert articles != null;
+        articles.forEach(article -> {
+            if (article.getTagList() != null) {
+                articleTagMapper.batchInsert(article.getTagList());
             }
-            articleTagMapper.batchInsert(articleTags);
-        }
+        });
+    }
 
+    @Override
+    public PageInfo<ArticleVo> selectByPage(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        Page<ArticleVo> articleVoPage = articleMapper.selectAll();
+        return new PageInfo<>(articleVoPage);
+    }
+
+    @Override
+    public ArticleVo getDetail(int id) {
+        return articleMapper.getDetail(id);
+    }
+
+    @Override
+    public Article postArticle(Article article) {
+        article.setCover("https://picsum.photos/1920/1080?random&rand=" + Math.random());
+        article.setCreateTime(LocalDateTime.now());
+        articleMapper.insertArticle(article);
+        List<ArticleTag> tagList = article.getTagList();
+        tagList.forEach(tag -> tag.setArticleId(article.getId()));
+        articleTagMapper.batchInsert(tagList);
         return article;
     }
-
 }
